@@ -22,3 +22,6 @@ coverage
 e2e_out/
 .impeccable/
 node-compile-cache/
+
+# Capturas y reporte del e2e (scripts/e2e_funnel.py de la skill landings-vsl)
+e2e-out/
