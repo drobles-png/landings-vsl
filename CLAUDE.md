@@ -1,6 +1,6 @@
-# funnel-vsl-base — plantilla neutra de funnel VSL (Bakano)
+# landings-vsl — plantilla neutra de funnel VSL (Bakano)
 
-Implementación de la skill `funnel-vsl-bakano`. **No es un cliente**: no agregar contenido, pixel,
+Plantilla de la skill `landings-vsl` (`~/.claude/skills/landings-vsl`). **No es un cliente**: no agregar contenido, pixel,
 webhooks ni calendarios reales aquí. Para un cliente se clona en un repo nuevo (ver README).
 Cuando la uses para un cliente, reescribe este archivo con: cliente, flujo, config, envíos y pendientes.
 
@@ -16,6 +16,9 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 - `src/config/funnel.ts` — TODO lo que cambia por cliente. Vacío = esa integración se omite.
   `PAYMENT_ENABLED` registra o no `/pago` y `/inscripcion-confirmada`.
 - `src/content/copy.ts` — todos los textos (marcadores `[…]`). `SEO` = título/descr. por ruta.
+  `LANDING.testimonials` y `LANDING.team`: opcionales, vacíos = la sección no aparece (solo reales).
+- `src/components/TestimonialsSection.vue`, `TeamSection.vue`, `PersonAvatar.vue` (foto o iniciales).
+- Portada del video en la landing: `VSL_POSTER` (Cloudinary) → `VSL_POSTER_FALLBACK` (public/) → recuadro.
 - `src/utils/qualification.ts` — preguntas, `OBJETIVO` (pregunta abierta) y `qualifies()`.
 - `src/utils/ghl.ts` — contrato GHL (`buildPayload`, `trackStage`, `postToGhl`, `buildNota`, `fbq`).
 - `src/utils/fbclid.ts` — `captureFbParams()` (en cada vista de entrada: `/` y `/ver-video`) y
@@ -25,7 +28,9 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 - `src/styles/tokens.scss` — colores/tipografía (se inyecta en cada `<style lang="scss">`; solo
   variables y mixins). `global.scss` — botones, campos, modales.
 - `vite.config.ts` — plugin `metaPixel`: lee `META_PIXEL_ID` de la config e inyecta el snippet del
-  pixel en `index.html` (vacío = sin pixel; el snippet no carga en localhost).
+  pixel en `index.html` (vacío = sin pixel; el snippet no carga en localhost). Plugin
+  `organizationJsonLd`: JSON-LD de la empresa con CLIENT/SITE_URL/LOGO_URL/LEGAL (sin nombre, nada).
+- `api/capi.ts` — solo los 6 eventos del funnel, solo mismo origen (403 si no), token en el cuerpo.
 
 ## Envíos
 | Momento | GHL (webhook · etapa) | Meta (Pixel + CAPI, mismo event_id) |
@@ -50,5 +55,5 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 `_contact` · `_qualification` · `_disq_at` · `_booked_at` · `_purchase_at` · `_fb` (sessionStorage)
 
 ## Pruebas
-`e2e/agenda.json` y `e2e/pago.json` para `scripts/e2e_funnel.py` de la skill (ver README).
+`e2e/agenda.json` y `e2e/pago.json` para `~/.claude/skills/landings-vsl/scripts/e2e_funnel.py` (ver README).
 Nunca dejar URLs de prueba en la config al hacer commit.

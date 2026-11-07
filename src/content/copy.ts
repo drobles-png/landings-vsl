@@ -3,6 +3,22 @@
 // No inventar cifras, testimonios, garantías ni bonos.
 import { BRAND_NAME, PERSON_NAME } from '@/config/funnel'
 
+export interface Testimonial {
+  name: string
+  role: string
+  quote: string
+  /** Resultado concreto que dijo el testimonio (opcional): "+30% en ventas" */
+  result?: string
+  photo?: string
+}
+
+export interface TeamMember {
+  name: string
+  role: string
+  bio?: string
+  photo?: string
+}
+
 export const SEO = {
   landing: {
     title: `${BRAND_NAME} | [Promesa principal del VSL]`,
@@ -47,6 +63,23 @@ export const LANDING = {
       { title: '[Paso 3]', text: '[Qué se resuelve en el paso 3]' },
     ],
     cta: 'Quiero ver cómo',
+  },
+
+  // Testimonios REALES del cliente (del VSL, de Google o de capturas que mande). Vacío = la sección
+  // no se muestra. photo: URL de Cloudinary o '' (muestra las iniciales).
+  // Formato: { name: 'Ana Pérez', role: 'Dueña de X · Quito', quote: '…', result: '+30% en ventas', photo: '' }
+  testimonials: {
+    eyebrow: 'Resultados',
+    title: '[Lo que dicen quienes ya lo hicieron]',
+    items: [] as Testimonial[],
+  },
+
+  // Quién está detrás (genera confianza antes de agendar). Vacío = la sección no se muestra.
+  // Formato: { name: 'Juan Pérez', role: 'CEO y fundador', bio: '…', photo: '' }
+  team: {
+    eyebrow: 'Quién te acompaña',
+    title: '[El equipo detrás de la reunión]',
+    items: [] as TeamMember[],
   },
 
   fit: {

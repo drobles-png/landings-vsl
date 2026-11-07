@@ -31,6 +31,14 @@ export const GHL_BOOKING_CALENDAR = '' // URL del src del iframe del código de 
 // form_embed.js lo usa para el alto automático. Cópialo del embed que manda el cliente.
 export const GHL_BOOKING_FRAME_ID = ''
 
+// ── Imágenes ──────────────────────────────────────────────────────────────────
+// Portada del video en la landing (foto de quien habla). URL de Cloudinary (f_auto,q_auto,w_1200).
+// Si el CDN falla se usa VSL_POSTER_FALLBACK (archivo en public/). Ambos vacíos = recuadro oscuro.
+export const VSL_POSTER = ''
+export const VSL_POSTER_FALLBACK = '' // ej. '/vsl-poster.webp'
+// Logo como URL absoluta (para el JSON-LD de la empresa). Vacío = el JSON-LD va sin logo.
+export const LOGO_URL = ''
+
 // ── Video ─────────────────────────────────────────────────────────────────────
 export const WISTIA_MEDIA_ID = ''
 // Segundos que el CTA de /ver-video queda bloqueado (0 = sin bloqueo). En localhost son 3 s.

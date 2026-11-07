@@ -6,7 +6,15 @@ import { useRoute, useRouter } from 'vue-router'
 import BrandLogo from '@/components/BrandLogo.vue'
 import RegistrationModal from '@/components/RegistrationModal.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
-import { IS_LOCAL, PERSON_NAME, STORAGE_PREFIX } from '@/config/funnel'
+import TeamSection from '@/components/TeamSection.vue'
+import TestimonialsSection from '@/components/TestimonialsSection.vue'
+import {
+  IS_LOCAL,
+  PERSON_NAME,
+  STORAGE_PREFIX,
+  VSL_POSTER,
+  VSL_POSTER_FALLBACK,
+} from '@/config/funnel'
 import { LANDING } from '@/content/copy'
 import { captureFbParams } from '@/utils/fbclid'
 
@@ -14,6 +22,12 @@ const route = useRoute()
 const router = useRouter()
 const modalOpen = ref(false)
 const showSticky = ref(false)
+
+// Portada del video: Cloudinary → archivo local → recuadro oscuro
+const poster = ref(VSL_POSTER || VSL_POSTER_FALLBACK)
+function onPosterError() {
+  poster.value = poster.value !== VSL_POSTER_FALLBACK ? VSL_POSTER_FALLBACK : ''
+}
 
 function openModal() {
   // Quien no calificó hace menos de 24 h vuelve a /sin-espacio
@@ -61,6 +75,15 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
         <p class="hero__sub">{{ LANDING.sub }}</p>
 
         <button type="button" class="vsl" data-cta="registro" aria-label="Ver el video completo" @click="openModal">
+          <img
+            v-if="poster"
+            class="vsl__poster"
+            :src="poster"
+            alt=""
+            fetchpriority="high"
+            decoding="async"
+            @error="onPosterError"
+          />
           <span class="vsl__play" aria-hidden="true"><i class="fa-solid fa-play"></i></span>
           <span class="vsl__caption">
             <strong>{{ PERSON_NAME }}</strong>
@@ -113,6 +136,10 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
         </div>
       </div>
     </section>
+
+    <!-- TESTIMONIOS Y EQUIPO (opcionales: sin items no se muestran) -->
+    <TestimonialsSection />
+    <TeamSection />
 
     <!-- ¿ES PARA TI? -->
     <section class="section" aria-labelledby="fit-title">
@@ -272,8 +299,19 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   color: $ink-on-dark;
   cursor: pointer;
   font: inherit;
+  overflow: hidden;
+
+  &__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+  }
 
   &__play {
+    position: relative;
     display: grid;
     place-items: center;
     width: 76px;

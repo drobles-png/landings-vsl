@@ -43,6 +43,63 @@ fbq('track', 'PageView');
   }
 }
 
+/** Lee un string de src/config/funnel.ts: `export const KEY = '…'` o `key: '…'` (dentro de un objeto). */
+function configString(src: string, key: string): string {
+  const re = new RegExp(`(?:export const ${key}\\s*=|\\b${key}\\s*:)\\s*['"]([^'"]*)['"]`)
+  return src.match(re)?.[1] ?? ''
+}
+
+/**
+ * JSON-LD de la empresa (schema.org/Organization) para Google y las IAs. Se arma solo con
+ * src/config/funnel.ts: CLIENT.name/instagram/facebook, SITE_URL, LOGO_URL, LEGAL, DEFAULT_COUNTRY.
+ * Sin CLIENT.name no se inyecta nada.
+ */
+function organizationJsonLd(): Plugin {
+  const configFile = fileURLToPath(new URL('./src/config/funnel.ts', import.meta.url))
+  return {
+    name: 'organization-json-ld',
+    transformIndexHtml() {
+      const src = readFileSync(configFile, 'utf8')
+      const name = configString(src, 'name')
+      if (!name) return []
+      const url = configString(src, 'SITE_URL')
+      const logo = configString(src, 'LOGO_URL')
+      const legalName = configString(src, 'razonSocial')
+      const email = configString(src, 'email')
+      const city = configString(src, 'ciudad')
+      const country = configString(src, 'DEFAULT_COUNTRY')
+      const sameAs = ['instagram', 'facebook'].map((k) => configString(src, k)).filter(Boolean)
+
+      const data: Record<string, unknown> = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name,
+        ...(legalName && { legalName }),
+        ...(url && { url }),
+        ...(logo && { logo }),
+        ...(email && { email }),
+        ...(sameAs.length && { sameAs }),
+        ...((city || country) && {
+          address: {
+            '@type': 'PostalAddress',
+            ...(city && { addressLocality: city }),
+            ...(country && { addressCountry: country }),
+          },
+        }),
+      }
+      return [
+        {
+          tag: 'script',
+          attrs: { type: 'application/ld+json' },
+          injectTo: 'head',
+          // "<" escapado para que ningún valor pueda cerrar el <script>
+          children: JSON.stringify(data).replace(/</g, '\\u003c'),
+        },
+      ]
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -56,6 +113,7 @@ export default defineConfig({
     }),
     vueDevTools(),
     metaPixel(),
+    organizationJsonLd(),
   ],
   resolve: {
     alias: {

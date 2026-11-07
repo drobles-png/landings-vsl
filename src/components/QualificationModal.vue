@@ -113,7 +113,8 @@ async function handleSubmit() {
   )
 
   if (califica) {
-    const custom = { content_name: 'lead-califica' }
+    // Las respuestas (valores internos, sin datos personales) sirven para segmentar en Meta
+    const custom = { content_name: 'lead-califica', ...a }
     fbq('track', 'Lead', custom, { eventID: eventId })
     sendCapiEvent(
       'Lead',
