@@ -37,6 +37,8 @@ export const SEO = {
 // ── Landing (/) ───────────────────────────────────────────────────────────────
 export const LANDING = {
   topbarTag: '[Categoría o propuesta en 4 palabras]',
+  // Temporizador del encabezado (components/CountdownTimer.vue). short = versión de celular.
+  timer: { label: 'Agenda de asesorías', short: 'Agenda', prefix: 'Cierra en' },
   audience: ['[Para quién es 1]', '[Para quién es 2]', '[Para quién es 3]'],
   headline: '[Promesa principal del VSL]',
   headlineAccent: '[parte destacada de la promesa]',

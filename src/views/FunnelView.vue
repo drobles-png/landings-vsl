@@ -4,6 +4,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BrandLogo from '@/components/BrandLogo.vue'
+import CountdownTimer from '@/components/CountdownTimer.vue'
 import RegistrationModal from '@/components/RegistrationModal.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 import TeamSection from '@/components/TeamSection.vue'
@@ -57,7 +58,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
     <header class="topbar">
       <div class="wrap topbar__inner">
         <BrandLogo />
-        <span class="topbar__tag">{{ LANDING.topbarTag }}</span>
+        <CountdownTimer />
       </div>
     </header>
 

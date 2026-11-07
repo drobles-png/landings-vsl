@@ -44,6 +44,10 @@ export const WISTIA_MEDIA_ID = ''
 // Segundos que el CTA de /ver-video queda bloqueado (0 = sin bloqueo). En localhost son 3 s.
 export const CTA_UNLOCK_SECONDS = 120
 
+// ── Temporizador del encabezado ───────────────────────────────────────────────
+// Duración de cada ciclo; se reinicia solo al llegar a 0 (anclado a la hora de Ecuador).
+export const TIMER_CYCLE_HOURS = 12
+
 // ── Registro ──────────────────────────────────────────────────────────────────
 // true = el formulario de registro pide ciudad (va a GHL como `ciudad`)
 export const ASK_CITY = false

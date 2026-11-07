@@ -24,6 +24,8 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 - `src/utils/fbclid.ts` — `captureFbParams()` (en cada vista de entrada: `/` y `/ver-video`) y
   `getStoredFbParams()` (fbc/fbp primero de las cookies del pixel).
 - `src/utils/capi.ts` + `api/capi.ts` — CAPI con el mismo `event_id` que el Pixel; no corre en localhost.
+- `src/components/CountdownTimer.vue` — temporizador del encabezado: ciclos de `TIMER_CYCLE_HOURS` (12) anclados a la hora
+  de Ecuador, se reinicia solo; textos en `LANDING.timer` (`short` = celular).
 - `src/components/GhlCalendar.vue` — iframe de GHL: alto automático, prefill, Schedule + `cita_agendada`.
 - `src/styles/tokens.scss` — colores/tipografía (se inyecta en cada `<style lang="scss">`; solo
   variables y mixins). `global.scss` — botones, campos, modales.
