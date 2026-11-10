@@ -59,3 +59,10 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 ## Pruebas
 `e2e/agenda.json` y `e2e/pago.json` para `~/.claude/skills/landings-vsl/scripts/e2e_funnel.py` (ver README).
 Nunca dejar URLs de prueba en la config al hacer commit.
+
+## No hacer
+- No inventar cifras, testimonios ni escasez. "Quedan N cupos" solo con una cifra real del cliente;
+  si su capacidad es grande, no se muestran cupos (basta el temporizador).
+- No dejar `META_CAPI_TEST_EVENT_CODE` en producción.
+- Los flujos de GHL no llevan la acción *Meta Conversion API* para los eventos que ya manda la
+  landing (no tiene Event ID: duplicaría). Ver `references/meta.md` de la skill.

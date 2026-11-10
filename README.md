@@ -87,6 +87,13 @@ python3 ~/.claude/skills/landings-vsl/scripts/e2e_funnel.py --base http://localh
 - Para ver CAPI: `pnpm dev --host` → `--base http://192.168.x.x:5173` con `CTA_UNLOCK_SECONDS = 0`
   temporal.
 - Modos `ghl` y `full` (escriben en el CRM y el pixel del cliente): solo en producción y con permiso.
+  Al terminar, borra los contactos de prueba y **las citas reales** que hayan quedado en el
+  calendario del cliente (el vendedor las ve como reuniones de verdad).
+- El abandono del registro (`registro_parcial`) se prueba a mano: solo un email válido en el
+  registro y cerrar el formulario.
+- Probador de eventos de Meta: los eventos del **Navegador** solo aparecen si la landing se abre
+  desde el Probador, sin bloqueador. Meta descarta el Pixel de navegadores headless
+  (`HeadlessChrome`); el e2e ya usa un user agent normal.
 
 ## Deploy (Vercel)
 
@@ -94,6 +101,7 @@ python3 ~/.claude/skills/landings-vsl/scripts/e2e_funnel.py --base http://localh
 función serverless de CAPI: acepta solo los 6 eventos del funnel, solo desde el mismo dominio, y
 manda el token a Meta en el cuerpo (nunca en la URL). Env vars en Production y Preview:
 `META_PIXEL_ID`, `META_CAPI_TOKEN` (nunca con prefijo `VITE_`). `META_CAPI_TEST_EVENT_CODE` solo
-mientras se usa el Probador de eventos. Repo público en `drobles-png`, proyecto en el equipo
+mientras se usa el Probador de eventos: después se quita y se hace redeploy (con el código puesto,
+los eventos no cuentan para las campañas). Repo público en `drobles-png`, proyecto en el equipo
 `bakano-proyects`. Ver `references/deploy.md` de la skill.
 Este repo es la plantilla: no tiene proyecto de Vercel propio.
