@@ -14,7 +14,8 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 
 ## Dónde está cada cosa
 - `src/config/funnel.ts` — TODO lo que cambia por cliente. Vacío = esa integración se omite.
-  `PAYMENT_ENABLED` registra o no `/pago` y `/inscripcion-confirmada`.
+  `PAYMENT_ENABLED` registra o no `/pago` y `/inscripcion-confirmada`; `PAYMENT_PROVIDER` elige
+  `'payphone'` (Cajita, pago verificado) o `'link'` (botón a `PAYMENT_URL`, sin verificación).
 - `src/content/copy.ts` — todos los textos (marcadores `[…]`). `SEO` = título/descr. por ruta.
   `LANDING.testimonials` y `LANDING.team`: opcionales, vacíos = la sección no aparece (solo reales).
 - `src/components/TestimonialsSection.vue`, `TeamSection.vue`, `PersonAvatar.vue` (foto o iniciales).
@@ -33,6 +34,12 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
   pixel en `index.html` (vacío = sin pixel; el snippet no carga en localhost). Plugin
   `organizationJsonLd`: JSON-LD de la empresa con CLIENT/SITE_URL/LOGO_URL/LEGAL (sin nombre, nada).
 - `api/capi.ts` — solo los 6 eventos del funnel, solo mismo origen (403 si no), token en el cuerpo.
+- Payphone: `api/payphone-order.ts` (fija el monto en `PRICE_CENTS` y entrega token/storeId),
+  `api/payphone-confirm.ts` (confirma con Payphone; Purchase solo si statusCode 3 y el monto
+  correcto), `src/utils/payphone.ts` (carga la Cajita). Env vars de Vercel: `PAYPHONE_TOKEN`,
+  `PAYPHONE_STORE_ID`; sin ellas `/pago` muestra el plan B (WhatsApp/Instagram). `vercel.json`
+  manda `Referrer-Policy: origin-when-cross-origin` (lo exige la Cajita).
+- En localhost **no sale nada a GHL** (consola `[GHL stub]`) salvo con `?ghl=1` en la URL.
 
 ## Envíos
 | Momento | GHL (webhook · etapa) | Meta (Pixel + CAPI, mismo event_id) |
@@ -41,8 +48,10 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 | /ver-video | — | ViewContent |
 | Cualificación | cualificación · `cualificacion` (+ `califica`, `resultado`, `*_label`, `objetivo`) | Lead (solo si califica) |
 | Cita | contacto · `cita_agendada` | Schedule |
-| /pago | contacto · `pago-iniciado` | InitiateCheckout |
-| /inscripcion-confirmada | contacto · `pagado` (1 vez por dispositivo) | Purchase |
+| /pago | contacto · `pago_iniciado` | InitiateCheckout |
+| /inscripcion-confirmada | contacto · `pagado` (Payphone: solo pago aprobado; link: 1 vez por dispositivo) | Purchase (Payphone: event_id `purchase_<transactionId>`) |
+
+Etapas en minúscula con guion bajo (`pago_iniciado`); tags con guion (`step-3-pago-iniciado`).
 
 ## Convenciones (el e2e depende de ellas)
 - `data-field` en cada input: `nombre`, `apellido`, `email`, `phone`, `pais`, `ciudad` (si `ASK_CITY`),
@@ -51,10 +60,10 @@ Font Awesome 6 por CDN · Geist por Google Fonts · función de Vercel `api/capi
 - Opciones de cualificación: `<label>` que envuelve `<input type="radio" value="…">`.
 - Rutas privadas con `noindex` (y `Disallow` en `public/robots.txt`).
 - Guards: `/agendar` y `/pago` exigen contacto (en localhost no, para diseñar); `/inscripcion-confirmada`
-  exige contacto siempre; `/agendar` además exige haber calificado; `/cita-confirmada` exige cita < 24 h.
+  exige contacto siempre con `'link'` (con Payphone no: el pago se verifica en el servidor); `/agendar` además exige haber calificado; `/cita-confirmada` exige cita < 24 h.
 
 ## localStorage / sessionStorage (`<STORAGE_PREFIX>_…`)
-`_contact` · `_qualification` · `_disq_at` · `_booked_at` · `_purchase_at` · `_fb` (sessionStorage)
+`_contact` · `_qualification` · `_disq_at` · `_booked_at` · `_purchase_at` (Payphone: `_purchase_at_<transactionId>`) · `_fb` (sessionStorage)
 
 ## Pruebas
 `e2e/agenda.json` y `e2e/pago.json` para `~/.claude/skills/landings-vsl/scripts/e2e_funnel.py` (ver README).

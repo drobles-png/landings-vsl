@@ -173,6 +173,8 @@ export const PAGO = {
   bullets: ['[Formato: en vivo, en línea]', '[Qué se lleva el asistente]'],
   noLink: 'Recibimos tus datos. Te enviaremos el enlace de pago a tu WhatsApp y a tu correo.',
   whatsappMsg: (nombre: string) => `Hola, soy ${nombre}. Me registré y quiero completar mi pago.`,
+  expired: 'El formulario de pago venció por seguridad. Ábrelo de nuevo para pagar.',
+  loadError: 'No pudimos cargar el pago. Inténtalo de nuevo o escríbenos.',
 }
 
 export const CONFIRMADA = {
@@ -184,4 +186,15 @@ export const CONFIRMADA = {
   ],
   calendarTitle: '¿Prefieres que veamos tu caso? Agenda una reunión',
   calendarButton: 'Agendar una reunión',
+  // Solo con Payphone: estados mientras se confirma el pago o si no se aprobó
+  checking: 'Confirmando tu pago…',
+  checkingSub: 'No cierres esta página, toma unos segundos.',
+  failedTitle: 'Tu pago no se completó',
+  failedSub: 'Payphone no aprobó el cobro. Puedes intentarlo de nuevo con otra tarjeta.',
+  nodataTitle: 'No encontramos un pago en este enlace',
+  nodataSub: 'Si ya pagaste, te llega la confirmación a tu correo. Si no, completa tu pago aquí.',
+  errorTitle: 'No pudimos confirmar tu pago',
+  errorSub: 'Si se te descontó el dinero, escríbenos con este número de transacción y lo revisamos.',
+  helpMsg: (nombre: string, tx: string) =>
+    `Hola, soy ${nombre}. Pagué y no me aparece confirmado${tx ? ` (transacción ${tx})` : ''}.`,
 }

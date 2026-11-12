@@ -60,9 +60,16 @@ export const PAYMENT_ENABLED = false
 export const PRICE = 0
 export const CURRENCY = 'USD'
 export const PRODUCT_NAME = ''
-// Link de la pasarela; debe redirigir al terminar a <dominio>/inscripcion-confirmada
+// Cómo se cobra (references/pago.md):
+//  'payphone' → Cajita de Payphone en /pago. El pago se confirma en el servidor y Purchase solo
+//               sale si Payphone lo aprobó. Credenciales en Vercel: PAYPHONE_TOKEN, PAYPHONE_STORE_ID.
+//               El monto lo fija api/payphone-order.ts (PRICE_CENTS): debe coincidir con PRICE.
+//  'link'     → botón a PAYMENT_URL (otra pasarela). No se puede verificar el pago: Purchase sale
+//               cuando la persona vuelve a /inscripcion-confirmada.
+export const PAYMENT_PROVIDER: 'payphone' | 'link' = 'payphone'
+// Solo con 'link': URL de la pasarela; debe redirigir al terminar a <dominio>/inscripcion-confirmada
 export const PAYMENT_URL = ''
-// WhatsApp de respaldo para cobrar si aún no hay PAYMENT_URL (formato 593987654321)
+// WhatsApp de respaldo para cobrar si el pago no está configurado (formato 593987654321)
 export const WHATSAPP_NUMBER = ''
 
 // ── Evento en vivo (OPCIONAL) ─────────────────────────────────────────────────

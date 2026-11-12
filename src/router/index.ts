@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import FunnelView from '@/views/FunnelView.vue'
-import { IS_LOCAL, PAYMENT_ENABLED, SITE_URL } from '@/config/funnel'
+import { IS_LOCAL, PAYMENT_ENABLED, PAYMENT_PROVIDER, SITE_URL } from '@/config/funnel'
 import { SEO } from '@/content/copy'
 import { useContactStore } from '@/stores/contact'
 
@@ -65,11 +65,12 @@ if (PAYMENT_ENABLED) {
       meta: { ...SEO.pago, noindex: true, requiresContact: true },
     },
     {
-      // La pasarela redirige aquí y se dispara Purchase: exige contacto guardado SIEMPRE
+      // La pasarela redirige aquí y se dispara Purchase. Con Payphone el pago se verifica en el
+      // servidor (sirve aunque pague en otro dispositivo); con 'link' exige contacto guardado SIEMPRE.
       path: '/inscripcion-confirmada',
       name: 'confirmada',
       component: () => import('@/views/ConfirmadaView.vue'),
-      meta: { ...SEO.confirmada, noindex: true, requiresContact: 'strict' },
+      meta: { ...SEO.confirmada, noindex: true, requiresContact: PAYMENT_PROVIDER === 'payphone' ? false : 'strict' },
     },
   )
 }

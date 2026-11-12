@@ -49,7 +49,7 @@ Agenda (por defecto)
   └ no califica → /sin-espacio (cooldown 24 h)
 
 Pago (PAYMENT_ENABLED = true)
-/ → registro → /pago (InitiateCheckout · pago-iniciado) → pasarela
+/ → registro → /pago (InitiateCheckout · pago_iniciado) → pasarela
   → /inscripcion-confirmada (Purchase · pagado, 1 vez por dispositivo) → calendario opcional
 ```
 
@@ -61,7 +61,7 @@ Todos los envíos pasan por `buildPayload` / `trackStage` / `postToGhl` (`src/ut
 `nombre, apellido, email, telefono (E.164), pais, etapa, tags, nota = notas, event_id, timestamp,
 url_pagina, fbclid, fbc, fbp, utm_*`. La cualificación agrega `califica` (bool), `resultado`
 (`CALIFICA`/`NO_CALIFICA`), cada respuesta y su `*_label`, y `objetivo`.
-Etapas: `registro`, `registro_parcial`, `cualificacion`, `cita_agendada`, `pago-iniciado`, `pagado`.
+Etapas: `registro`, `registro_parcial`, `cualificacion`, `cita_agendada`, `pago_iniciado`, `pagado`.
 El `event_id` es el mismo que va al Pixel y a CAPI. El `Lead` lleva además las respuestas de la
 cualificación (valores internos, sin datos personales) para segmentar en Meta.
 Detalle, mapeo y workflows: `references/contrato-ghl.md` y `references/ghl-workflows.md` de la skill.

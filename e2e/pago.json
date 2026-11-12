@@ -5,7 +5,7 @@
   {"click": "form [type=submit]"},
   {"wait_url": "**/pago"},
   {"shot": "pago"},
-  {"goto": "/inscripcion-confirmada"},
+  {"goto": "/inscripcion-confirmada?id=123456&clientTransactionId=tx-e2e"},
   {"click_text": "Agendar una reunión"},
   {"booking_complete": true},
   {"shot": "final"}
