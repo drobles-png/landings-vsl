@@ -94,7 +94,8 @@ export function buildPayload(
   return {
     ...contacto,
     etapa,
-    tags: [FUNNEL_TAG, ...opts.tags],
+    // ads-bakano: todo lead que llega de una landing de Bakano (pauta de Bakano) va marcado así en GHL
+    tags: [FUNNEL_TAG, 'ads-bakano', ...opts.tags],
     nota,
     notas: nota,
     event_id,
